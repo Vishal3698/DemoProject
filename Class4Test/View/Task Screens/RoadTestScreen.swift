@@ -63,7 +63,7 @@ struct RoadTestScreen: View {
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.horizontal)
                         .padding(.top, 30)
-                    TextDesc(text: "To book a road test for Class 4, you have to call the ICBC office to book a road test as it can not be booked via website.", darkestColor: darkestColor).padding(.leading, 6)
+                    TextDesc(text: "Once you've passed your Class 4 knowledge test, \nschedule a Class 4 pre-trip vehicle inspection and road test \nby calling the road test booking call centre:", darkestColor: darkestColor).padding(.leading, 6)
                     Spacer()
                     Button(action: {
                         guard let url = URL(string: "tel://1-800-950-1498") else { return }
@@ -79,6 +79,8 @@ struct RoadTestScreen: View {
                             .padding(.horizontal)
                             .padding(.vertical, 12)
                     })
+                    
+                    
                 }else{
                     Text("Remember")
                         .font(.system(size: 24))

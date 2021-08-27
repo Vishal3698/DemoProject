@@ -41,9 +41,9 @@ struct AppHome: View {
                 .foregroundColor(Color(hex: darkestColor))
                 .font(.system(size: 30))
                 .fontWeight(.heavy)
-                .padding(.top, UIScreen.main.bounds.height*0.09)
+                .padding(.top, UIScreen.main.bounds.height*0.06)
 
-            Text("Driver's Licence Guide")
+            Text("British Columbia \nDriver's Licence Guide")
                 .font(.system(size: 30))
                 .fontWeight(.bold)
                 .foregroundColor(Color(hex: darkColor).opacity(0.81))

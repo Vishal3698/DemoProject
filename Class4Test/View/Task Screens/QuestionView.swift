@@ -26,6 +26,7 @@ struct QuestionView: View {
     @State private var disabled = false
     @State var nextButtonStatus: Bool = true
     @Environment(\.colorScheme) var colorScheme
+    
     var darkColor: String{
         colorScheme == .light ? "393E46" : "93B5C6"
         
@@ -57,7 +58,7 @@ struct QuestionView: View {
                                 .font(.title2)
                                 .foregroundColor(Color(hex: darkestColor))
                                 .fixedSize(horizontal: false, vertical: true)
-                            ImageView(url: myURL, placeholder: { Text("") }, image: { Image(uiImage: $0).resizable() })
+                            ImageView(url: myURL, placeholder: { Text("not") }, image: { Image(uiImage: $0).resizable() })
                                 .frame(maxWidth: UIScreen.main.bounds.height*0.15, maxHeight: UIScreen.main.bounds.height*0.15, alignment: .center)
                                 .padding(.all, 3)
                         }
@@ -66,17 +67,25 @@ struct QuestionView: View {
                             .fontWeight(.heavy)
                             .foregroundColor(Color(hex: darkestColor))
                             .fixedSize(horizontal: false, vertical: true)
-                        ImageView(url: myURL, placeholder: { Text("") }, image: { Image(uiImage: $0).resizable() })
+                        ImageView(url: myURL, placeholder: { Text("Image is loading") }, image: { Image(uiImage: $0).resizable() })
                             .frame(maxWidth: UIScreen.main.bounds.height*0.15, maxHeight: UIScreen.main.bounds.height*0.15, alignment: .center)
                             .padding(.all, 3)
                     }
-                    
                 }else{
-                    Text(question.question!)
-                        .font(.system(size: 24))
-                        .fontWeight(.heavy)
-                        .lineLimit(4)
-                        .foregroundColor(Color(hex: darkestColor))
+                    if ((lengthOfWord ?? 0)<=72){
+                        Text(question.question!)
+                            .font(.system(size: 27))
+                            .fontWeight(.heavy)
+                            .lineLimit(6)
+                            .foregroundColor(Color(hex: darkestColor))
+                    }else{
+                        Text(question.question!)
+                            .font(.system(size: 21))
+                            .fontWeight(.heavy)
+                            .lineLimit(6)
+                            .foregroundColor(Color(hex: darkestColor))
+                    }
+                    
                 }
             Spacer(minLength: 30)
             // Options...
@@ -261,12 +270,12 @@ struct QuestionView: View {
 
 struct QuestionView_Previews: PreviewProvider {
     static var previews: some View {
-        let question = Question(id: "hihih", question: "You are operating a vehicle whose peak engine torque is at 1,500 r.p.m.",
-                                optionA: "Dhat will you do when you have to ride a steep hil Dhat will you do when you have to ride a steep hdsdsdsdfgdfddfdf",
-                                optionB: "Dhat will you do when you have to ride a steep hil Dhat will you do when you have to ride a steep hdsdsdsdfgdfddfdf",
-                                optionC: "Chat will you do when you have to ride a steep hil ",
-                                optionD: "Dhat will you do when you have to ride a steep hil Dhat will you do when you have to ride a steep hdsdsdsdfgdfddfdf", answer: "B",
-                                qImage: "", isSubmitted: false, completed: false)
+        let question = Question(id: "hihih", question: "A sign indicating that school children may be present and that is accompanied by a 30 km/h speed limit means you must slow down to 30 km/h at which times?",
+                                optionA: "All the time.",
+                                optionB: "All the time.",
+                                optionC: "Between 8 AM and 5 PM on school days.",
+                                optionD: "Between 8 AM and 5 PM on school days.", answer: "Between 8 AM and 5 PM on school days.",
+                                qImage: "https://www.yourlibrary.ca/wp-content/uploads/driving/scenario1.gif", isSubmitted: false, completed: false)
         Group {
             QuestionView(question: .constant(question), correct: .constant(0), wrong: .constant(0), answered: .constant(5), submitted: .constant(false))
                 .previewDevice("iPhone X")

@@ -48,7 +48,7 @@ struct TripInspectionScreen: View {
                 .padding(.all)
 
             TextDesc(text: "Below is a useful resources from ICBC to help you preapre:", darkestColor: darkestColor)
-            
+            Spacer()
             Button(action: {
                 openURL(URL(string: "http://www.icbc.com/insurance/commercial/Documents/class4-pre-trip-inspection.pdf")!)
             }, label: {
@@ -74,8 +74,10 @@ struct TripInspectionScreen: View {
                     .background(Color(hex: darkestColor))
                     .cornerRadius(9)
                     .padding(.horizontal)
+                    .padding(.bottom, 12)
             })
-            Spacer()
+            
+
         }
         .background(Color(hex: lightestColor).ignoresSafeArea())
     }

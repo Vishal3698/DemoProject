@@ -129,6 +129,7 @@ struct TestScreen: View {
                             correct = 0
                             wrong = 0
                             submitted = false
+                            started = false
                         }, label: {
                             Text("Go to Home")
                                 .fontWeight(.heavy)
@@ -236,6 +237,8 @@ struct TestScreen: View {
                                 answered = 0
                                 correct = 0
                                 wrong = 0
+                                started = false
+                            
                             }, label: {
                                 Image(systemName: "xmark.circle")
                                     .resizable()
@@ -275,7 +278,7 @@ struct TestScreen: View {
                                     QuestionView(question: $data.questions[index], correct: $correct, wrong: $wrong, answered: $answered, submitted: $submitted)
                                     // if current question is completed means moving away...
                                         .offset(x: data.questions[index].completed ? 1000 : 0)
-                                        .rotationEffect(.init(degrees: data.questions[index].completed ? 10 : 0))
+                                        .rotationEffect(.init(degrees: data.questions[index].completed ? 9 : 0))
                                 }
                             }else{
                                 ForEach(0..<noOfQuestionsToShow){index in
@@ -283,7 +286,7 @@ struct TestScreen: View {
                                     QuestionView(question: $data.questions[index], correct: $correct, wrong: $wrong, answered: $answered, submitted: $submitted)
                                     // if current question is completed means moving away...
                                         .offset(x: data.questions[index].completed ? 1000 : 0)
-                                        .rotationEffect(.init(degrees: data.questions[index].completed ? 10 : 0))
+                                        .rotationEffect(.init(degrees: data.questions[index].completed ? 9 : 0))
                                 }
                             }
                             
@@ -332,9 +335,9 @@ struct TestScreen_Previews: PreviewProvider {
     static var previews: some View {
         
         Group {
-            TestScreen(correct: .constant(1), wrong: .constant(4), answered: .constant(5), submitted: .constant(false), started: .constant(true), set: "Class4")
+            TestScreen(correct: .constant(1), wrong: .constant(4), answered: .constant(3), submitted: .constant(false), started: .constant(true), set: "Class4")
                 .previewDevice("iPhone X")
-            TestScreen(correct: .constant(4), wrong: .constant(1), answered: .constant(5), submitted: .constant(false), started: .constant(true), set: "Class4")
+            TestScreen(correct: .constant(4), wrong: .constant(1), answered: .constant(3), submitted: .constant(false), started: .constant(true), set: "Class4")
                 .previewDevice("iPhone X")
                 .preferredColorScheme(.dark)
         }

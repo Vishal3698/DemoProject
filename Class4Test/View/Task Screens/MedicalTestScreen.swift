@@ -43,7 +43,7 @@ struct MedicalTestScreen: View {
                 .frame(maxWidth: .infinity, alignment: .center)
                 .clipShape(Circle())
             
-            TextDesc(text: "As a commercial driver, you'll take a medical exam when applying for your licence, also on a regular basis after that. \n\nA doctor usually charges you a fee for these exams.", darkestColor: darkestColor).padding(.top, 30)
+            TextDesc(text: "Once you’ve passed your Class 4 road test, you’ll receive a driver medical examination form to have completed by a doctor. \n\nA doctor usually charges you a fee for these exams.", darkestColor: darkestColor).padding(.top, 30)
         
             Spacer()
             TextDesc(text: "Find more information on below link: ", darkestColor: darkestColor)
