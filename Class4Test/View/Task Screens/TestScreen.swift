@@ -281,7 +281,8 @@ struct TestScreen: View {
                         
                         Spacer()
                         QuestionView(question: $data.questions[queIndex], correct: $correct, wrong: $wrong, answered: $answered, submitted: $submitted)
-//                                    .offset(x: data.questions[queIndex].completed ? 300 : 0)
+//                      .offset(x: data.questions[queIndex].completed ? 300 : 0)
+                        
                         Spacer()
                         HStack{
                             Button(action: submittedQuiz, label: {
@@ -309,17 +310,6 @@ struct TestScreen: View {
                         .padding(.vertical, 21)
                 }
                     .edgesIgnoringSafeArea(.bottom)
-                        
-                        // QuestionView...
-                    
-                        
-                        
-//                        ZStack{
-//
-//                        }
-//                        .padding(.all, 3)
-//                        .padding(.top, 15)
-                    
                 }
             }
         }
