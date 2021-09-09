@@ -16,6 +16,13 @@ struct TestScreen: View {
     @Binding var submitted: Bool
     @Binding var started: Bool
     @State var noOfQuestionsToShow: Int = 5
+    @State var queIndex = 0
+    var nextButtonStatus: Bool{
+        return ((correct == 0 && wrong == 0) || (data.questions[queIndex].isSubmitted == false)) ? true : false
+    }
+    var buttonColor: Color {
+        return nextButtonStatus ? Color(hex: lightColor) : Color(hex: darkestColor)
+    }
  
     var set: String
     @StateObject var data = QuestionViewModel()
@@ -40,13 +47,15 @@ struct TestScreen: View {
     }
     
     var body: some View {
-       
         ZStack{
             Color(hex: lightestColor).ignoresSafeArea()
             if data.questions.isEmpty{
                 ProgressView()
             }
             else{
+                //If data is found
+                
+                
                 if answered == noOfQuestionsToShow || submitted == true{
                     VStack(alignment: .center){
                         let result = (CGFloat(correct)/(CGFloat(correct) + CGFloat(wrong)))*100
@@ -130,6 +139,7 @@ struct TestScreen: View {
                             wrong = 0
                             submitted = false
                             started = false
+                            queIndex = 0
                         }, label: {
                             Text("Go to Home")
                                 .fontWeight(.heavy)
@@ -146,6 +156,7 @@ struct TestScreen: View {
                             data.getQuestions(set: set)
                             submitted = false
                             started = false
+                            queIndex = 0
                         }, label: {
                             Text("Try Again")
                                 .fontWeight(.heavy)
@@ -157,65 +168,64 @@ struct TestScreen: View {
                         })
                         Spacer()
                     }
-                }else{
-                    if answered == 0 && started == false{
-                        VStack{
-                            HStack{
-                                Button(action: {
-                                    present.wrappedValue.dismiss()
-                                    answered = 0
-                                    correct = 0
-                                    wrong = 0
-                                }, label: {
-                                    Image(systemName: "xmark.circle")
-                                        .resizable()
-                                        .frame(width: 27, height: 27)
-                                        .foregroundColor(Color(hex: darkColor)).opacity(0.87)
-                                        .padding()
-                                })
-                                Spacer()
-                            }
-
-                            Spacer()
-                            Text("Number of Questions:")
-                                .font(.title)
-                                .foregroundColor(Color(hex: darkestColor))
-                            
-                            Picker("Questions:", selection: $noOfQuestionsToShow, content: {
-                                Group{
-                                    Text("5").tag(5)
-                                    Text("10").tag(10)
-                                    Text("20").tag(20)
-                                    Text("35").tag(35)
-                                    Text("80").tag(80)
-                                    Text("all").tag(data.questions.count)
-                                }
-                                .foregroundColor(Color(hex: darkestColor))
-                            })
-                            .padding(.horizontal, 30)
-                            
-                            Spacer()
+                    
+                }else if answered == 0 && started == false{
+                    
+                    VStack{
+                        HStack{
                             Button(action: {
-                                started = true
-                                if noOfQuestionsToShow>data.questions.count{
-                                    noOfQuestionsToShow = data.questions.count
-                                }
+                                present.wrappedValue.dismiss()
+                                answered = 0
+                                correct = 0
+                                wrong = 0
                             }, label: {
-                                Text("Start")
-                                    .fontWeight(.heavy)
-                                    .foregroundColor(Color(hex: lightestColor))
-                                    .padding(.vertical)
-                                    .frame(maxWidth: 111, maxHeight: 45)
-                                    .background(Color(hex: darkestColor))
-                                    .cornerRadius(9)
+                                Image(systemName: "xmark.circle")
+                                    .resizable()
+                                    .frame(width: 27, height: 27)
+                                    .foregroundColor(Color(hex: darkColor)).opacity(0.87)
+                                    .padding()
                             })
                             Spacer()
                         }
+
+                        Spacer()
+                        Text("Number of Questions:")
+                            .font(.title)
+                            .foregroundColor(Color(hex: darkestColor))
                         
-                    }else{
+                        Picker("Questions:", selection: $noOfQuestionsToShow, content: {
+                            Group{
+                                Text("5").tag(5)
+                                Text("10").tag(10)
+                                Text("20").tag(20)
+                                Text("35").tag(35)
+                                Text("80").tag(80)
+                                Text("all").tag(data.questions.count)
+                            }
+                            .foregroundColor(Color(hex: darkestColor))
+                        })
+                        .padding(.horizontal, 30)
+                        
+                        Spacer()
+                        Button(action: {
+                            started = true
+                                if noOfQuestionsToShow>data.questions.count{
+                                    noOfQuestionsToShow = data.questions.count
+                                }
+                        }, label: {
+                            Text("Start")
+                                .fontWeight(.heavy)
+                                .foregroundColor(Color(hex: lightestColor))
+                                .padding(.vertical)
+                                .frame(maxWidth: 111, maxHeight: 45)
+                                .background(Color(hex: darkestColor))
+                                .cornerRadius(9)
+                        })
+                        Spacer()
+                    }
+                }else{
                     VStack{
                         // Top Progress View...
-
                         ZStack(alignment: Alignment(horizontal: .leading, vertical: .center), content: {
                             
                             Capsule()
@@ -230,7 +240,7 @@ struct TestScreen: View {
                         .padding(.all, 12)
                         
                         // Correct And Wrong Count...
-                        
+                        Spacer()
                         HStack{
                             Button(action: {
                                 present.wrappedValue.dismiss()
@@ -269,36 +279,50 @@ struct TestScreen: View {
                         .padding()
                         .frame(height: 30)
                         
-                        // QuestionView...
-                        
-                        ZStack{
-                            if noOfQuestionsToShow == data.questions.count{
-                                ForEach(0..<data.questions.count){index in
-                                    // View...
-                                    QuestionView(question: $data.questions[index], correct: $correct, wrong: $wrong, answered: $answered, submitted: $submitted)
-                                    // if current question is completed means moving away...
-                                        .offset(x: data.questions[index].completed ? 1000 : 0)
-                                        .rotationEffect(.init(degrees: data.questions[index].completed ? 9 : 0))
-                                }
-                            }else{
-                                ForEach(0..<noOfQuestionsToShow){index in
-                                    // View...
-                                    QuestionView(question: $data.questions[index], correct: $correct, wrong: $wrong, answered: $answered, submitted: $submitted)
-                                    // if current question is completed means moving away...
-                                        .offset(x: data.questions[index].completed ? 1000 : 0)
-                                        .rotationEffect(.init(degrees: data.questions[index].completed ? 9 : 0))
-                                }
-                            }
-                            
+                        Spacer()
+                        QuestionView(question: $data.questions[queIndex], correct: $correct, wrong: $wrong, answered: $answered, submitted: $submitted)
+//                                    .offset(x: data.questions[queIndex].completed ? 300 : 0)
+                        Spacer()
+                        HStack{
+                            Button(action: submittedQuiz, label: {
+                                    Text("Submit")
+                                        .fontWeight(.heavy)
+                                        .foregroundColor(((wrong == 0) && (correct == 0)) ? Color.black : Color(hex: lightestColor))
+                                        .padding(.vertical)
+                                        .frame(maxWidth: .infinity)
+                                        .background(((wrong == 0) && (correct == 0)) ? Color(hex: lightColor) : Color(hex: darkestColor))
+                                        .cornerRadius(9)
+                            })
+                            .disabled(((wrong == 0) && (correct == 0)) ? true : false)
+                            Button(action: nextQues, label: {
+                                    Text("Next")
+                                        .fontWeight(.heavy)
+                                        .foregroundColor(nextButtonStatus ? Color.black : Color(hex: lightestColor))
+                                        .padding(.vertical)
+                                        .frame(maxWidth: .infinity)
+                                        .background(buttonColor)
+                                        .cornerRadius(9)
+                            })
+                            .disabled(nextButtonStatus)
                         }
-                        .padding(.all, 3)
-                        .padding(.top, 15)
-                    }
+                        .frame(width: UIScreen.main.bounds.width * 0.9)
+                        .padding(.vertical, 21)
                 }
+                    .edgesIgnoringSafeArea(.bottom)
+                        
+                        // QuestionView...
+                    
+                        
+                        
+//                        ZStack{
+//
+//                        }
+//                        .padding(.all, 3)
+//                        .padding(.top, 15)
+                    
                 }
             }
         }
-        
         // fetching...
         .onAppear(perform: {
             data.getQuestions(set: set)
@@ -327,6 +351,19 @@ struct TestScreen: View {
             return Color.red
         }
     }
+    
+    func nextQues(){
+        withAnimation{
+            data.questions[queIndex].completed.toggle()
+        }
+        answered += 1
+        queIndex += 1
+    }
+
+    func submittedQuiz(){
+            submitted = true
+        queIndex = 0
+    }
 }
 
 
@@ -335,7 +372,7 @@ struct TestScreen_Previews: PreviewProvider {
     static var previews: some View {
         
         Group {
-            TestScreen(correct: .constant(1), wrong: .constant(4), answered: .constant(3), submitted: .constant(false), started: .constant(true), set: "Class4")
+            TestScreen(correct: .constant(1), wrong: .constant(4), answered: .constant(1), submitted: .constant(false), started: .constant(true), set: "Class4")
                 .previewDevice("iPhone X")
             TestScreen(correct: .constant(4), wrong: .constant(1), answered: .constant(3), submitted: .constant(false), started: .constant(true), set: "Class4")
                 .previewDevice("iPhone X")
@@ -343,4 +380,5 @@ struct TestScreen_Previews: PreviewProvider {
         }
     }
 }
+
 

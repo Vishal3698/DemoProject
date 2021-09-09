@@ -43,7 +43,7 @@ struct AppHome: View {
                 .fontWeight(.heavy)
                 .padding(.top, UIScreen.main.bounds.height*0.06)
 
-            Text("British Columbia \nDriver's Licence Guide")
+            Text("British Columbia Driver's Licence Guide")
                 .font(.system(size: 30))
                 .fontWeight(.bold)
                 .foregroundColor(Color(hex: darkColor).opacity(0.81))
@@ -73,7 +73,7 @@ struct AppHome: View {
                         
                 })
             }
-            .padding(.horizontal)
+            .padding(.all)
            
             
             VStack(alignment: .leading){
@@ -124,7 +124,7 @@ struct AppHome: View {
         }
         .onAppear(perform: {selected = 0})
 
-        }
+        }.navigationViewStyle(StackNavigationViewStyle())
     }
     
 }
@@ -245,10 +245,7 @@ struct AppHome_Previews: PreviewProvider {
     static var previews: some View {
         Group{
             AppHome()
-                .previewDevice("iPhone X")
-            AppHome()
-                .previewDevice("iPhone X")
-                .preferredColorScheme(.dark)
+//                .previewDevice("iPhone X")
         }
        
     }
